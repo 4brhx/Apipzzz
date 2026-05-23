@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abu Al-Baziz - AI Agent</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Icon Sidebar (LobeChat style) -->
+        <nav class="icon-sidebar">
+            <div class="icon-sidebar-top">
+                <button class="icon-nav-btn active" title="المحادثات" data-tab="chat">
+                    <i class="fas fa-message"></i>
+                </button>
+                <button class="icon-nav-btn" title="الإيجنتات" data-tab="agents">
+                    <i class="fas fa-robot"></i>
+                </button>
+                <button class="icon-nav-btn" title="الإضافات" data-tab="plugins">
+                    <i class="fas fa-puzzle-piece"></i>
+                </button>
+                <button class="icon-nav-btn" title="قاعدة المعرفة" data-tab="knowledge">
+                    <i class="fas fa-book-open"></i>
+                </button>
+            </div>
+            <div class="icon-sidebar-bottom">
+                <button class="icon-nav-btn" title="الإعدادات" id="openSettings">
+                    <i class="fas fa-gear"></i>
+                </button>
+                <div class="user-avatar-mini">
+                    <span>ب</span>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Conversations Panel -->
+        <aside class="conv-panel" id="convPanel">
+            <div class="conv-panel-header">
+                <h2>المحادثات</h2>
+                <button class="icon-btn" id="newChatBtn" title="محادثة جديدة">
+                    <i class="fas fa-pen-to-square"></i>
+                </button>
+            </div>
+            <div class="conv-search">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="بحث..." id="searchInput">
+            </div>
+            <div class="conv-list" id="convList">
+                <div class="conv-item active">
+                    <div class="conv-item-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="conv-item-info">
+                        <span class="conv-item-title">مساعدة في البرمجة</span>
+                        <span class="conv-item-preview">بالتأكيد، خلني أساعدك...</span>
+                    </div>
+                    <span class="conv-item-time">الآن</span>
+                </div>
+                <div class="conv-item">
+                    <div class="conv-item-avatar blue">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="conv-item-info">
+                        <span class="conv-item-title">تحليل بيانات المبيعات</span>
+                        <span class="conv-item-preview">النتائج تظهر أن...</span>
+                    </div>
+                    <span class="conv-item-time">2 س</span>
+                </div>
+                <div class="conv-item">
+                    <div class="conv-item-avatar green">
+                        <i class="fas fa-language"></i>
+                    </div>
+                    <div class="conv-item-info">
+                        <span class="conv-item-title">ترجمة وثائق تقنية</span>
+                        <span class="conv-item-preview">ها هي الترجمة...</span>
+                    </div>
+                    <span class="conv-item-time">5 س</span>
+                </div>
+                <div class="conv-item">
+                    <div class="conv-item-avatar orange">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <div class="conv-item-info">
+                        <span class="conv-item-title">كتابة مقال عن AI</span>
+                        <span class="conv-item-preview">المقدمة تبدأ بـ...</span>
+                    </div>
+                    <span class="conv-item-time">أمس</span>
+                </div>
+                <div class="conv-item">
+                    <div class="conv-item-avatar pink">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="conv-item-info">
+                        <span class="conv-item-title">حل مسائل رياضية</span>
+                        <span class="conv-item-preview">الخطوة الأولى...</span>
+                    </div>
+                    <span class="conv-item-time">أمس</span>
+                </div>
+                <div class="conv-item">
+                    <div class="conv-item-avatar cyan">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="conv-item-info">
+                        <span class="conv-item-title">تصميم قاعدة بيانات</span>
+                        <span class="conv-item-preview">الهيكل المقترح...</span>
+                    </div>
+                    <span class="conv-item-time">3 أيام</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Chat Area -->
+        <main class="chat-main">
+            <!-- Chat Header -->
+            <header class="chat-header">
+                <button class="toggle-panel-btn" id="togglePanel">
+                    <i class="fas fa-sidebar-flip"></i>
+                </button>
+                <div class="chat-header-info">
+                    <div class="agent-badge">
+                        <div class="agent-badge-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="agent-badge-text">
+                            <span class="agent-name">Abu Al-Baziz</span>
+                            <span class="agent-status"><span class="status-dot"></span>متصل</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <button class="header-action-btn" title="المحادثة">
+                        <i class="fas fa-clock-rotate-left"></i>
+                    </button>
+                    <button class="header-action-btn" title="مشاركة">
+                        <i class="fas fa-share-nodes"></i>
+                    </button>
+                    <button class="header-action-btn" title="المزيد">
+                        <i class="fas fa-ellipsis-vertical"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Messages Area -->
+            <div class="chat-messages" id="chatMessages">
+                <!-- Welcome Screen -->
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-agent-avatar">
+                        <div class="avatar-glow"></div>
+                        <div class="avatar-main">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                    </div>
+                    <h1 class="welcome-title">Abu Al-Baziz</h1>
+                    <p class="welcome-desc">مساعدك الذكي المتقدم - جاهز لمساعدتك في أي مهمة</p>
+                    <div class="welcome-tags">
+                        <span class="tag"><i class="fas fa-code"></i> برمجة</span>
+                        <span class="tag"><i class="fas fa-pen-fancy"></i> كتابة</span>
+                        <span class="tag"><i class="fas fa-language"></i> ترجمة</span>
+                        <span class="tag"><i class="fas fa-brain"></i> تحليل</span>
+                    </div>
+                    <div class="welcome-suggestions">
+                        <button class="suggestion-chip" data-prompt="اكتب لي كود Python لتحليل البيانات">
+                            <i class="fas fa-code"></i>
+                            <span>اكتب لي كود Python</span>
+                        </button>
+                        <button class="suggestion-chip" data-prompt="ساعدني في كتابة مقال احترافي">
+                            <i class="fas fa-pen-fancy"></i>
+                            <span>ساعدني في كتابة مقال</span>
+                        </button>
+                        <button class="suggestion-chip" data-prompt="اشرح لي مفهوم Machine Learning">
+                            <i class="fas fa-lightbulb"></i>
+                            <span>اشرح لي Machine Learning</span>
+                        </button>
+                        <button class="suggestion-chip" data-prompt="صمم لي REST API لتطبيق">
+                            <i class="fas fa-server"></i>
+                            <span>صمم لي REST API</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Messages Container -->
+                <div class="messages-wrapper" id="messagesWrapper" style="display:none;">
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-wrapper">
+                <div class="input-box">
+                    <div class="input-tools">
+                        <button class="tool-btn" title="إرفاق ملف">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button class="tool-btn" title="صورة">
+                            <i class="fas fa-image"></i>
+                        </button>
+                        <button class="tool-btn" title="صوت">
+                            <i class="fas fa-microphone"></i>
+                        </button>
+                    </div>
+                    <textarea id="messageInput" placeholder="اسأل أبو البزيز أي شيء..." rows="1"></textarea>
+                    <button class="send-btn" id="sendBtn" disabled>
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                </div>
+                <div class="input-footer-info">
+                    <span>Abu Al-Baziz <span class="model-tag">Pro</span> • قد يرتكب أخطاء</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2><i class="fas fa-gear"></i> الإعدادات</h2>
+                <button class="close-modal" id="closeSettings"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-group">
+                    <h3>عام</h3>
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <i class="fas fa-moon"></i>
+                            <span>الوضع الداكن</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="switch-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <i class="fas fa-globe"></i>
+                            <span>اللغة</span>
+                        </div>
+                        <select class="setting-select">
+                            <option selected>العربية</option>
+                            <option>English</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <i class="fas fa-text-height"></i>
+                            <span>حجم الخط</span>
+                        </div>
+                        <select class="setting-select">
+                            <option>صغير</option>
+                            <option selected>متوسط</option>
+                            <option>كبير</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3>النموذج</h3>
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <i class="fas fa-brain"></i>
+                            <span>النموذج المفضل</span>
+                        </div>
+                        <select class="setting-select">
+                            <option selected>Abu Al-Baziz Pro</option>
+                            <option>Abu Al-Baziz Fast</option>
+                            <option>Abu Al-Baziz Code</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <i class="fas fa-temperature-half"></i>
+                            <span>درجة الحرارة</span>
+                        </div>
+                        <input type="range" min="0" max="100" value="70" class="range-input">
+                    </div>
+                    <div class="setting-row">
+                        <div class="setting-label">
+                            <i class="fas fa-maximize"></i>
+                            <span>الحد الأقصى (Tokens)</span>
+                        </div>
+                        <input type="number" value="4096" class="num-input">
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3>API</h3>
+                    <div class="setting-row column">
+                        <div class="setting-label">
+                            <i class="fas fa-key"></i>
+                            <span>مفتاح API</span>
+                        </div>
+                        <input type="password" placeholder="sk-..." class="text-input" id="apiKeyInput">
+                    </div>
+                    <div class="setting-row column">
+                        <div class="setting-label">
+                            <i class="fas fa-link"></i>
+                            <span>عنوان API</span>
+                        </div>
+                        <input type="url" placeholder="https://api.example.com/v1" class="text-input" id="apiUrlInput">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
