@@ -192,6 +192,11 @@ ROI: العائد على الاستثمار
         ...messages.slice(-20) // Keep last 20 messages for context
     ];
 
+    if (!process.env.OPENROUTER_API_KEY) {
+        console.error('Missing OPENROUTER_API_KEY');
+        return res.status(500).json({ error: 'API key not configured' });
+    }
+
     try {
         const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
             method: 'POST',
@@ -202,7 +207,7 @@ ROI: العائد على الاستثمار
                 'X-Title': 'Abu Al-Baziz'
             },
             body: JSON.stringify({
-                model: 'deepseek/deepseek-chat-v3-0324',
+                model: 'google/gemini-2.5-flash-preview',
                 messages: apiMessages,
                 temperature: 0.7,
                 max_tokens: 2048
@@ -211,15 +216,15 @@ ROI: العائد على الاستثمار
 
         if (!response.ok) {
             const errorData = await response.text();
-            console.error('OpenRouter Error:', errorData);
-            return res.status(response.status).json({ error: 'API request failed' });
+            console.error('OpenRouter Error:', response.status, errorData);
+            return res.status(response.status).json({ error: 'API request failed', details: errorData });
         }
 
         const data = await response.json();
         return res.status(200).json(data);
 
     } catch (error) {
-        console.error('Server Error:', error);
+        console.error('Server Error:', error.message);
         return res.status(500).json({ error: 'Internal server error' });
     }
 }

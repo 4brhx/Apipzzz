@@ -169,7 +169,20 @@ class AbuAlBaziz {
             typingEl.remove();
 
             if (!response.ok) {
-                throw new Error('فشل الاتصال بالسيرفر');
+                const errorData = await response.json().catch(() => ({}));
+                console.error('API Error:', response.status, errorData);
+                
+                let errorMsg = 'عذراً، صار خطأ بالاتصال. حاول مرة ثانية.';
+                if (response.status === 429) {
+                    errorMsg = 'عذراً، طلبات وايد بنفس الوقت. انتظر شوية وحاول مرة ثانية.';
+                } else if (response.status === 402) {
+                    errorMsg = 'عذراً، الرصيد خلص. تواصل مع صاحب الموقع.';
+                }
+                
+                this.addMessageToUI('assistant', errorMsg);
+                this.messages.pop();
+                this.isTyping = false;
+                return;
             }
 
             const data = await response.json();
@@ -180,7 +193,8 @@ class AbuAlBaziz {
 
         } catch (error) {
             typingEl.remove();
-            this.addMessageToUI('assistant', 'عذراً، صار خطأ بالاتصال. حاول مرة ثانية.');
+            this.addMessageToUI('assistant', 'عذراً، صار خطأ بالاتصال. تأكد من اتصالك بالإنترنت وحاول مرة ثانية.');
+            this.messages.pop();
             console.error('Error:', error);
         }
 
