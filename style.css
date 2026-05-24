@@ -47,6 +47,7 @@ body {
     background: var(--bg-1);
     color: var(--text-1);
     height: 100vh;
+    height: 100dvh;
     overflow: hidden;
     -webkit-font-smoothing: antialiased;
 }
@@ -60,6 +61,7 @@ body {
 .app-container {
     display: flex;
     height: 100vh;
+    height: 100dvh;
     width: 100%;
 }
 
@@ -189,8 +191,10 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh;
     min-width: 0;
     background: var(--bg-1);
+    overflow: hidden;
 }
 
 /* Chat Header */
@@ -310,6 +314,7 @@ body {
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    min-height: 0;
 }
 
 /* Welcome Screen */
@@ -540,9 +545,14 @@ body {
 
 /* ===== Input Area ===== */
 .chat-input-wrapper {
-    padding: 16px 24px 16px;
+    padding: 12px 24px;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
     background: var(--bg-1);
     flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    border-top: 1px solid var(--border-1);
 }
 
 .input-box {
@@ -573,7 +583,7 @@ body {
     font-size: 16px;
     line-height: 1.5;
     resize: none;
-    max-height: 150px;
+    max-height: 120px;
     padding: 8px 4px;
     min-height: 38px;
 }
@@ -642,14 +652,66 @@ body {
     .welcome-title { font-size: 24px; }
     .welcome-desc { font-size: 13px; }
 
-    .chat-input-wrapper { padding: 12px 16px 12px; }
+    .chat-input-wrapper {
+        padding: 10px 14px;
+        padding-bottom: max(10px, env(safe-area-inset-bottom));
+    }
+
+    .input-box {
+        padding: 6px 12px;
+        border-radius: var(--radius-lg);
+    }
+
+    .input-box textarea {
+        font-size: 16px;
+        min-height: 36px;
+        padding: 6px 4px;
+    }
+
     .messages-wrapper { padding: 16px; }
+
+    .chat-messages {
+        padding-bottom: 0;
+    }
 }
 
 @media (max-width: 480px) {
-    .chat-header { padding: 0 12px; }
+    .chat-header { padding: 0 12px; height: 50px; }
     .agent-name { font-size: 13px; }
     .agent-status { display: none; }
-    .input-box { padding: 6px 12px; }
+
+    .chat-input-wrapper {
+        padding: 8px 10px;
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+
+    .input-box {
+        padding: 5px 10px;
+        border-radius: var(--radius-md);
+    }
+
+    .input-box textarea {
+        font-size: 16px;
+        min-height: 34px;
+        padding: 5px 2px;
+    }
+
+    .send-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
     .suggestion-chip { padding: 12px; font-size: 12px; }
+
+    .welcome-screen {
+        padding: 20px 16px;
+        justify-content: center;
+    }
+
+    .avatar-main {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+    }
 }

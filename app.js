@@ -38,6 +38,21 @@ class AbuAlBaziz {
             this.autoResizeTextarea();
         });
 
+        // Handle mobile keyboard - scroll input into view
+        this.messageInput.addEventListener('focus', () => {
+            setTimeout(() => {
+                this.messageInput.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            }, 300);
+        });
+
+        // Handle visual viewport resize (mobile keyboard open/close)
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => {
+                document.documentElement.style.height = `${window.visualViewport.height}px`;
+                this.scrollToBottom();
+            });
+        }
+
         // Toggle panel
         this.togglePanel.addEventListener('click', () => {
             this.convPanel.classList.toggle('collapsed');
